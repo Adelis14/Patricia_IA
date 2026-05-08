@@ -83,7 +83,7 @@ app.post('/api/update-profile', upload.single('avatar'), async (req, res) => {
     const updateData = {};
     if (newPassword) updateData.password = newPassword;
     if (colorTema) updateData.colorTema = colorTema;
-    if (req.file) updateData.avatarUrl = `http://localhost:3001/uploads/${req.file.filename}`;
+    if (req.file) updateData.avatarUrl = `https://dashboard-api-0bfr.onrender.com/uploads/${req.file.filename}`;
 
     await User.updateOne({ username }, { $set: updateData });
     res.json({ success: true, avatarUrl: updateData.avatarUrl });

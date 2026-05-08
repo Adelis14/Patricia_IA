@@ -4,17 +4,17 @@
     <div class="container">
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-          <div class="bg-white d-flex align-items-center justify-content-center me-3" style="width: 240px; height: 80px; border-radius: 18px;">
+          <div class="bg-white d-flex align-items-center justify-content-center me-3 header-logo-container" style="width: 240px; height: 80px; border-radius: 18px;">
             <img src="assets/img/sede_caracas.jpeg" alt="" width="210" height="60" class="img-fluid">
           </div>
           <div>
-            <h1 class="h4 mb-1 text-white fw-bold">Asistente Virtual IUJO</h1>
-            <p class="mb-0 text-white fw-bold">Estoy aquí para ayudarte con cualquier información que necesites sobre la institución y sus procesos.</p>
+            <h1 class="h4 mb-1 text-white fw-bold header-title">Asistente Virtual IUJO</h1>
+            <p class="mb-0 text-white fw-bold header-subtitle">Estoy aquí para ayudarte con cualquier información que necesites sobre la institución y sus procesos.</p>
           </div>
         </div>
         <div class="d-flex align-items-center">
           <button *ngIf="mensajes.length > 0" (click)="limpiarConversacion()" class="btn btn-sm text-white border-white me-3 px-3 shadow-sm transition-all" style="border-radius: 20px; background: rgba(255,255,255,0.1);">
-            <i class="fas fa-trash-alt me-1"></i> Limpiar Chat
+            <i class="fas fa-trash-alt me-1"></i> <span class="btn-limpiar-text">Limpiar Chat</span>
           </button>
           <span class="text-white font-semibold text-sm" style="letter-spacing: 0.5px;">Version 1.0</span>
         </div>
@@ -31,7 +31,7 @@
           <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; background: linear-gradient(120deg, #ffffff 0%, #f8fbff 100%);">
             <div class="card-body text-center p-4">
               <div class="d-inline-flex align-items-center justify-content-center mb-3">
-                <img src="assets/img/frente-patricia.jpeg" alt="Patricia IUJO" class="rounded-circle" style="width: 140px; height: 140px; object-fit: contain; object-position: center; filter: brightness(1.2) contrast(1.1);">
+                <img src="assets/img/frente-patricia.jpeg" alt="Patricia IUJO" class="rounded-circle welcome-img" style="width: 140px; height: 140px; object-fit: contain; object-position: center; filter: brightness(1.2) contrast(1.1);">
               </div>
               <h2 class="h4 mb-2 fw-bold text-danger">¡Bienvenido! Soy Patricia, el Asistente Virtual del IUJO</h2>
               <p class="mb-4 text-muted">Puedes preguntarme sobre cualquier tema relacionado al Instituto Universitario Jesús Obrero. Estoy aquí para ayudarte en la gestión de cualquier proceso.</p>
@@ -55,7 +55,7 @@
 
             <!-- Mensaje del usuario -->
             <div class="d-flex mb-4 justify-content-end" *ngIf="message.enviado === 'user'">
-              <div class="flex-grow-1" style="max-width: 85%;">
+              <div class="flex-grow-1 message-bubble" style="max-width: 85%;">
                 <div class="card border-0 text-white" style="border-radius: 18px; border-bottom-right-radius: 5px; background: linear-gradient(135deg, #9e4141 0%, #d43d3d 100%);">
                   <div class="card-body">
                     <p class="card-text mb-0">{{ message.contenido }}</p>
@@ -129,8 +129,8 @@
                    [(ngModel)]="nuevoMensajeUsuario"
                    (keyup.enter)="setPromptUser()"
                    >
-            <button class="btn rounded-pill px-4 py-2" type="button" (click)="setPromptUser()" [disabled]="botonEnviarDisabled" style="background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
-              <i class="fas fa-paper-plane me-2 text-white"></i> <strong class="text-white">Enviar</strong>
+            <button class="btn rounded-pill px-4 py-2 send-btn" type="button" (click)="setPromptUser()" [disabled]="botonEnviarDisabled" style="background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
+              <i class="fas fa-paper-plane me-2 text-white"></i> <strong class="text-white send-btn-text">Enviar</strong>
             </button>
           </div>
         </div>

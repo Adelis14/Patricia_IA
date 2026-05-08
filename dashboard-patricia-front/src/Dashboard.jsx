@@ -13,7 +13,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
   React.useEffect(() => {
     if (seccion === 'editor') {
       setIsXmlLoading(true);
-      fetch('http://localhost:3001/api/assistant-xml')
+      fetch('https://dashboard-api-0bfr.onrender.com/api/assistant-xml')
         .then(res => res.json())
         .then(data => {
           if (data.success) setXmlCode(data.content);
@@ -22,7 +22,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
         .catch(() => setIsXmlLoading(false));
     }
     if (seccion === 'historial') {
-      fetch('http://localhost:3001/api/chatlogs')
+      fetch('https://dashboard-api-0bfr.onrender.com/api/chatlogs')
         .then(res => res.json())
         .then(data => {
           if (data.success) setChatLogs(data.logs);
@@ -31,7 +31,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
   }, [seccion]);
 
   const handleSaveXml = async () => {
-    const resp = await fetch('http://localhost:3001/api/assistant-xml', {
+    const resp = await fetch('https://dashboard-api-0bfr.onrender.com/api/assistant-xml', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: xmlCode })
@@ -49,7 +49,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
     formData.append('colorTema', color);
     if (file) formData.append('avatar', file);
 
-    const resp = await fetch('http://localhost:3001/api/update-profile', {
+    const resp = await fetch('https://dashboard-api-0bfr.onrender.com/api/update-profile', {
       method: 'POST',
       body: formData
     });

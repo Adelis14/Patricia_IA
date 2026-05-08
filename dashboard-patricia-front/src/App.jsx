@@ -12,14 +12,14 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetch('http://localhost:3001/api/stats')
+      fetch('https://dashboard-api-0bfr.onrender.com/api/stats')
         .then(res => res.json())
         .then(data => setTotalConsultas(data.total));
     }
   }, [isAuthenticated]);
 
   const handleLogin = async (user, pass) => {
-    const response = await fetch('http://localhost:3001/api/login', {
+    const response = await fetch('https://dashboard-api-0bfr.onrender.com/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user, pass })

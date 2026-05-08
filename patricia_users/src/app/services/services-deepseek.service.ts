@@ -7,7 +7,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 })
 export class ServicesDeepseekService {
 
-  url:string = 'http://localhost:8080/api/openai/'
+  url:string = 'https://patricia-ia.onrender.com/api/openai/'
   //url:string = 'https://assistant-iujo-api.vercel.app/api/openai/'
 
   constructor(

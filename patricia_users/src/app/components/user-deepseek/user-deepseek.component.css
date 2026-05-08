@@ -64,3 +64,41 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(198, 53, 53, 0.25) !important;
 }
+
+/* Ajustes Responsivos para Móviles */
+@media (max-width: 768px) {
+  .header-logo-container {
+    width: 140px !important;
+    height: 50px !important;
+    padding: 5px !important;
+  }
+  
+  .header-title {
+    font-size: 1.1rem !important;
+  }
+  
+  .header-subtitle {
+    display: none; /* Ocultamos el texto largo en móviles muy pequeños */
+  }
+
+  .welcome-img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .btn-limpiar-text {
+    display: none;
+  }
+
+  .message-bubble {
+    max-width: 90% !important;
+  }
+
+  .send-btn-text {
+    display: none;
+  }
+  
+  .send-btn {
+    padding: 0.8rem 1.2rem !important;
+  }
+}
