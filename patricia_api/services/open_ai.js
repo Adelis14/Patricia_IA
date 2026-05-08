@@ -37,13 +37,13 @@ const consult_gpt_services = async (prompt_user, currentHistory = []) => {
 		let IUJO_CONTEXT_AND_RULES = "";
 
 		if (!configDoc) {
-			// Si no existe en BD, lo leemos del archivo por última vez y lo guardamos
 			const xmlPath = path.join(__dirname, '..', 'assistant-config.xml');
 			IUJO_CONTEXT_AND_RULES = fs.readFileSync(xmlPath, 'utf8');
 			await Config.create({ key: 'assistant-xml', content: IUJO_CONTEXT_AND_RULES });
-			console.log("XML migrado a MongoDB exitosamente.");
+			console.log("⚠️ XML no encontrado en BD. Migrado desde archivo local.");
 		} else {
 			IUJO_CONTEXT_AND_RULES = configDoc.content;
+			console.log("✅ XML cargado desde MongoDB Atlas. Inicio del contenido:", IUJO_CONTEXT_AND_RULES.substring(0, 50) + "...");
 		}
 		
 		// Inyectar la fecha y hora actual en la zona de Caracas dinámicamente

@@ -123,9 +123,12 @@ app.post('/api/assistant-xml', async (req, res) => {
   if (typeof content !== 'string') return res.status(400).json({ success: false, error: 'Invalid content' });
   
   try {
+    console.log("💾 Guardando nueva configuración XML en MongoDB...");
     await Config.updateOne({ key: 'assistant-xml' }, { $set: { content } }, { upsert: true });
+    console.log("✅ XML guardado exitosamente. Longitud:", content.length);
     res.json({ success: true });
   } catch (err) {
+    console.error("❌ Error guardando XML:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
