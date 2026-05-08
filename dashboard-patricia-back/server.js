@@ -12,7 +12,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Conexión principal (Usuarios y Configuración XML)
 const mainUri = 'mongodb+srv://adelissanchez16_db_user:adelis@cluster0.ilj0krv.mongodb.net/asistente-iujo?retryWrites=true&w=majority&appName=Cluster0';
-mongoose.connect(mainUri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mainUri)
   .then(() => console.log("✅ Conectado exitosamente a MongoDB Atlas (asistente-iujo)"))
   .catch(err => console.error("❌ Error CRÍTICO conectando a MongoDB:", err.message));
 
@@ -27,7 +27,7 @@ app.get('/api/test-db', (req, res) => {
 
 // Conexión secundaria (Estadísticas Cloud)
 const cloudUri = 'mongodb+srv://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@cluster0.gxtmudw.mongodb.net/prod-patricia?retryWrites=true&w=majority&appName=Cluster0';
-const dbCloud = mongoose.createConnection(cloudUri, { useNewUrlParser: true, useUnifiedTopology: true });
+const dbCloud = mongoose.createConnection(cloudUri);
 dbCloud.on('error', (err) => console.error("Error conectando a dbCloud (Estadísticas):", err.message));
 
 // Multer: Limpiar nombre de archivo para evitar errores en URLs
