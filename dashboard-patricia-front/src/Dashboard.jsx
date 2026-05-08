@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Dashboard = ({ consultas, user, onLogout }) => {
+const Dashboard = ({ consultas, user, onLogout, onUpdateUser }) => {
   const [seccion, setSeccion] = useState('inicio');
   const [pass, setPass] = useState('');
   const [color, setColor] = useState(user.colorTema || 'cyan');
@@ -57,7 +57,12 @@ const Dashboard = ({ consultas, user, onLogout }) => {
     const data = await resp.json();
     if (data.success) {
       alert("¡Perfil actualizado con éxito!");
-      if (data.avatarUrl) setPreview(data.avatarUrl);
+      if (data.avatarUrl) {
+        setPreview(data.avatarUrl);
+        onUpdateUser({ avatarUrl: data.avatarUrl, colorTema: color });
+      } else {
+        onUpdateUser({ colorTema: color });
+      }
     }
   };
 

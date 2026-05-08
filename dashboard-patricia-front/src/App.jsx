@@ -40,6 +40,11 @@ function App() {
     <Dashboard 
       consultas={totalConsultas} 
       user={userData} 
+      onUpdateUser={(newData) => {
+        const updated = { ...userData, ...newData };
+        setUserData(updated);
+        localStorage.setItem('patricia_user', JSON.stringify(updated));
+      }}
       onLogout={() => {
         setIsAuthenticated(false);
         setUserData(null);

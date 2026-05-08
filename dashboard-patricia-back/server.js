@@ -18,16 +18,17 @@ const cloudUri = 'mongodb://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@ac-flwuk
 const dbCloud = mongoose.createConnection(cloudUri);
 dbCloud.on('error', (err) => console.error("Error conectando a dbCloud (Estadísticas):", err.message));
 
-// Multer
+// Multer: Limpiar nombre de archivo para evitar errores en URLs
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
+    if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+  filename: (req, file, cb) => {
+    const safeName = file.originalname.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9.\-]/g, '');
+    cb(null, `${Date.now()}-${safeName}`);
+  }
 });
 const upload = multer({ storage });
 
