@@ -11,14 +11,23 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Conexión principal (Usuarios y Configuración XML)
-const mainUri = 'mongodb://adelissanchez16_db_user:adelis@ac-gbr35zd-shard-00-00.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-01.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-02.ilj0krv.mongodb.net:27017/asistente-iujo?ssl=true&replicaSet=atlas-pjs17l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0';
-mongoose.connect(mainUri)
+const mainUri = 'mongodb+srv://adelissanchez16_db_user:adelis@cluster0.ilj0krv.mongodb.net/asistente-iujo?retryWrites=true&w=majority&appName=Cluster0';
+mongoose.connect(mainUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ Conectado exitosamente a MongoDB Atlas (asistente-iujo)"))
   .catch(err => console.error("❌ Error CRÍTICO conectando a MongoDB:", err.message));
 
+// Ruta de diagnóstico
+app.get('/api/test-db', (req, res) => {
+  res.json({
+    status: mongoose.connection.readyState === 1 ? 'Conectado' : 'Desconectado',
+    database: mongoose.connection.name,
+    readyState: mongoose.connection.readyState
+  });
+});
+
 // Conexión secundaria (Estadísticas Cloud)
-const cloudUri = 'mongodb://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@ac-flwukhz-shard-00-00.gxtmudw.mongodb.net:27017,ac-flwukhz-shard-00-01.gxtmudw.mongodb.net:27017,ac-flwukhz-shard-00-02.gxtmudw.mongodb.net:27017/prod-patricia?ssl=true&replicaSet=atlas-flwukhz-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0';
-const dbCloud = mongoose.createConnection(cloudUri);
+const cloudUri = 'mongodb+srv://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@cluster0.gxtmudw.mongodb.net/prod-patricia?retryWrites=true&w=majority&appName=Cluster0';
+const dbCloud = mongoose.createConnection(cloudUri, { useNewUrlParser: true, useUnifiedTopology: true });
 dbCloud.on('error', (err) => console.error("Error conectando a dbCloud (Estadísticas):", err.message));
 
 // Multer: Limpiar nombre de archivo para evitar errores en URLs
