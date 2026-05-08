@@ -45,7 +45,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Modelos
-const Stats = dbCloud.model('Stats', new mongoose.Schema({ consultas: Number }, { collection: 'stadistics', strict: false }));
+const Stats = mongoose.model('Stats', new mongoose.Schema({ consultas: Number }, { collection: 'estadisticas', strict: false }));
 const User = mongoose.model('User', new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },

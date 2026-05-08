@@ -11,4 +11,4 @@ const stadisticsSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Stadistics', stadisticsSchema);
+module.exports = mongoose.model('Stadistics', stadisticsSchema, 'estadisticas');
