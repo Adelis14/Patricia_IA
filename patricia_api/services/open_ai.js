@@ -2,6 +2,7 @@ const { OpenAI } = require('openai');
 const fetch = require('node-fetch');
 const Stadistics = require('../models/stadistics');
 const ChatLog = require('../models/chatLog');
+const Config = require('../models/config');
 const fs = require('fs');
 const path = require('path');
 
@@ -31,9 +32,19 @@ const consult_gpt_services = async (prompt_user, currentHistory = []) => {
 
 		const lowerCaseQuery = prompt_user.toLowerCase();
 
-		// Construir el prompt del sistema leyendo el XML
-		const xmlPath = path.join(__dirname, '..', 'assistant-config.xml');
-		let IUJO_CONTEXT_AND_RULES = fs.readFileSync(xmlPath, 'utf8');
+		// Construir el prompt del sistema leyendo el XML desde MongoDB
+		let configDoc = await Config.findOne({ key: 'assistant-xml' });
+		let IUJO_CONTEXT_AND_RULES = "";
+
+		if (!configDoc) {
+			// Si no existe en BD, lo leemos del archivo por última vez y lo guardamos
+			const xmlPath = path.join(__dirname, '..', 'assistant-config.xml');
+			IUJO_CONTEXT_AND_RULES = fs.readFileSync(xmlPath, 'utf8');
+			await Config.create({ key: 'assistant-xml', content: IUJO_CONTEXT_AND_RULES });
+			console.log("XML migrado a MongoDB exitosamente.");
+		} else {
+			IUJO_CONTEXT_AND_RULES = configDoc.content;
+		}
 		
 		// Inyectar la fecha y hora actual en la zona de Caracas dinámicamente
 		const caracasDate = new Date().toLocaleString('es-VE', { 

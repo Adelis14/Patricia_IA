@@ -48,6 +48,11 @@ const ChatLog = dbLocal.model('ChatLog', new mongoose.Schema({
   date: { type: Date, default: Date.now }
 }, { collection: 'chatlogs' }));
 
+const Config = dbLocal.model('Config', new mongoose.Schema({
+  key: { type: String, default: 'assistant-xml' },
+  content: { type: String, required: true }
+}, { collection: 'config' }));
+
 // Rutas
 app.get('/api/stats', async (req, res) => {
   try {
@@ -99,24 +104,30 @@ app.post('/api/update-profile', upload.single('avatar'), async (req, res) => {
   }
 });
 
-// Rutas para el XML del asistente
-app.get('/api/assistant-xml', (req, res) => {
-  const xmlPath = path.join(__dirname, '..', 'patricia_api', 'assistant-config.xml');
-  fs.readFile(xmlPath, 'utf8', (err, data) => {
-    if (err) return res.status(500).json({ success: false, error: err.message });
-    res.json({ success: true, content: data });
-  });
+// Rutas para el XML del asistente (Ahora en MongoDB)
+app.get('/api/assistant-xml', async (req, res) => {
+  try {
+    let config = await Config.findOne({ key: 'assistant-xml' });
+    if (!config) {
+      // Fallback por si Patricia API aún no lo ha creado
+      return res.json({ success: true, content: "<!-- El XML se inicializará cuando Patricia responda su primera pregunta o puedes pegarlo aquí -->" });
+    }
+    res.json({ success: true, content: config.content });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
-app.post('/api/assistant-xml', (req, res) => {
-  const xmlPath = path.join(__dirname, '..', 'patricia_api', 'assistant-config.xml');
+app.post('/api/assistant-xml', async (req, res) => {
   const { content } = req.body;
   if (typeof content !== 'string') return res.status(400).json({ success: false, error: 'Invalid content' });
   
-  fs.writeFile(xmlPath, content, 'utf8', (err) => {
-    if (err) return res.status(500).json({ success: false, error: err.message });
+  try {
+    await Config.updateOne({ key: 'assistant-xml' }, { $set: { content } }, { upsert: true });
     res.json({ success: true });
-  });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 app.listen(3001, () => console.log("🚀 Backend IUJO listo en puerto 3001"));
