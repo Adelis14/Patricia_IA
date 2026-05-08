@@ -126,12 +126,17 @@ app.post('/api/assistant-xml', async (req, res) => {
   if (typeof content !== 'string') return res.status(400).json({ success: false, error: 'Invalid content' });
   
   try {
-    console.log("💾 Guardando nueva configuración XML en MongoDB...");
-    await Config.updateOne({ key: 'assistant-xml' }, { $set: { content } }, { upsert: true });
-    console.log("✅ XML guardado exitosamente. Longitud:", content.length);
-    res.json({ success: true });
+    console.log("🧹 Limpiando configuración anterior...");
+    await Config.deleteMany({ key: 'assistant-xml' });
+    
+    console.log("💾 Insertando nuevo XML en la base de datos:", mongoose.connection.name);
+    const nuevoConfig = new Config({ key: 'assistant-xml', content });
+    await nuevoConfig.save();
+    
+    console.log("✅ XML guardado físicamente en Atlas. Longitud:", content.length);
+    res.json({ success: true, length: content.length });
   } catch (err) {
-    console.error("❌ Error guardando XML:", err);
+    console.error("❌ Error FATAL guardando XML:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
