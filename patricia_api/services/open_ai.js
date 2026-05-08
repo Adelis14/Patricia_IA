@@ -23,7 +23,7 @@ const consult_gpt_services = async (prompt_user, currentHistory = []) => {
 			throw new Error("API Key not found");
 		}
 
-		consult_stadistics_services(prompt_user);
+		await consult_stadistics_services(prompt_user);
 
 		const openai = new OpenAI({
 			apiKey: API_KEY,
@@ -172,29 +172,18 @@ const consult_gpt_services = async (prompt_user, currentHistory = []) => {
 
 const consult_stadistics_services = async (peticion) => {
 	try {
+		if (!peticion) return;
 
-
-		let number = 0;
-
-		if (peticion) {
-			number = 1;
-		}
-
-		const stadistics = await Stadistics.findOne();
-
-		if (stadistics) {
-			stadistics.consultas += number;
-			await stadistics.save();
-			return;
-		}
-
-		console.log("Consulta guardada exitosamente");
-
+		console.log("📊 Actualizando contador en Atlas...");
+		// Buscamos cualquier documento de estadísticas y le sumamos 1
+		const res = await Stadistics.findOneAndUpdate(
+			{}, 
+			{ $inc: { consultas: 1 }, $set: { date: Date.now() } }, 
+			{ upsert: true, new: true }
+		);
+		console.log("✅ Contador actualizado. Nuevo valor:", res.consultas);
 	} catch (error) {
-		console.error("Ocurrió un error en consult_stadistics_services:", error);
-		return {
-			response: 'Lo siento, hubo un problema al guardar la traza'
-		};
+		console.error("❌ Error crítico en consult_stadistics_services:", error);
 	}
 };
 
