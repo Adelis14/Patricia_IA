@@ -11,11 +11,23 @@ function App() {
   const [totalConsultas, setTotalConsultas] = useState(0);
 
   useEffect(() => {
+    let interval;
+    const fetchStats = () => {
+      if (isAuthenticated) {
+        fetch('https://dashboard-api-0bfr.onrender.com/api/stats')
+          .then(res => res.json())
+          .then(data => setTotalConsultas(data.total))
+          .catch(err => console.error("Error al refrescar estadísticas:", err));
+      }
+    };
+
+    fetchStats(); // Carga inicial
+
     if (isAuthenticated) {
-      fetch('https://dashboard-api-0bfr.onrender.com/api/stats')
-        .then(res => res.json())
-        .then(data => setTotalConsultas(data.total));
+      interval = setInterval(fetchStats, 30000); // Refrescar cada 30 segundos
     }
+
+    return () => clearInterval(interval); // Limpiar al salir
   }, [isAuthenticated]);
 
   const handleLogin = async (user, pass) => {
