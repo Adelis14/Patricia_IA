@@ -25,11 +25,6 @@ app.get('/api/test-db', (req, res) => {
   });
 });
 
-// Conexión secundaria (Estadísticas Cloud)
-const cloudUri = 'mongodb+srv://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@cluster0.gxtmudw.mongodb.net/prod-patricia?retryWrites=true&w=majority&appName=Cluster0';
-const dbCloud = mongoose.createConnection(cloudUri);
-dbCloud.on('error', (err) => console.error("Error conectando a dbCloud (Estadísticas):", err.message));
-
 // Multer: Limpiar nombre de archivo para evitar errores en URLs
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -68,11 +63,8 @@ const Config = mongoose.model('Config', new mongoose.Schema({
 // Rutas
 app.get('/api/stats', async (req, res) => {
   try {
-    const data = await Stats.findOne();
-    console.log("Datos de estadísticas leídos de la nube:", data);
-    // Intentamos leer 'consultas', pero si el campo se llama distinto, el log nos dirá
-    const total = data ? (data.consultas || data.numero_consultas || data.total || 0) : 0;
-    res.json({ total });
+    const s = await mongoose.model('Stats').findOne().lean();
+    res.json({ total: s ? s.consultas : 0 });
   } catch (error) {
     console.error("Error obteniendo stats:", error);
     res.status(500).json({ total: 0 });
