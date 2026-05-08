@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Uploads (archivos de usuarios)
+uploads/*
+!uploads/.gitkeep
+
+# Env
+.env
+.env.local
+*.local
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/

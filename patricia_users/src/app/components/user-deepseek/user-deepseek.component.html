@@ -1,0 +1,140 @@
+<div class="d-flex flex-column vh-100" style="background: linear-gradient(135deg, #f5f7ff 0%, #f0f7fa 100%);">
+  <!-- Cabecera elegante -->
+  <header class="py-3 shadow-sm" style="background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="bg-white d-flex align-items-center justify-content-center me-3" style="width: 240px; height: 80px; border-radius: 18px;">
+            <img src="assets/img/sede_caracas.jpeg" alt="" width="210" height="60" class="img-fluid">
+          </div>
+          <div>
+            <h1 class="h4 mb-1 text-white fw-bold">Asistente Virtual IUJO</h1>
+            <p class="mb-0 text-white fw-bold">Estoy aquí para ayudarte con cualquier información que necesites sobre la institución y sus procesos.</p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <button *ngIf="mensajes.length > 0" (click)="limpiarConversacion()" class="btn btn-sm text-white border-white me-3 px-3 shadow-sm transition-all" style="border-radius: 20px; background: rgba(255,255,255,0.1);">
+            <i class="fas fa-trash-alt me-1"></i> Limpiar Chat
+          </button>
+          <span class="text-white font-semibold text-sm" style="letter-spacing: 0.5px;">Version 1.0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Área principal de chat -->
+  <main class="flex-grow-1 overflow-auto py-4" #chatContainer>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+          <!-- Mensaje de bienvenida destacado -->
+          <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; background: linear-gradient(120deg, #ffffff 0%, #f8fbff 100%);">
+            <div class="card-body text-center p-4">
+              <div class="d-inline-flex align-items-center justify-content-center mb-3">
+                <img src="assets/img/frente-patricia.jpeg" alt="Patricia IUJO" class="rounded-circle" style="width: 140px; height: 140px; object-fit: contain; object-position: center; filter: brightness(1.2) contrast(1.1);">
+              </div>
+              <h2 class="h4 mb-2 fw-bold text-danger">¡Bienvenido! Soy Patricia, el Asistente Virtual del IUJO</h2>
+              <p class="mb-4 text-muted">Puedes preguntarme sobre cualquier tema relacionado al Instituto Universitario Jesús Obrero. Estoy aquí para ayudarte en la gestión de cualquier proceso.</p>
+
+            </div>
+          </div>
+
+          <!-- Sugerencias Rápidas -->
+          <div class="suggestions-container mb-4" *ngIf="mensajes.length === 0">
+            <h6 class="text-muted mb-3 fw-bold text-center">Preguntas sugeridas para empezar:</h6>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+              <button *ngFor="let sug of sugerencias" 
+                      class="btn btn-outline-danger rounded-pill suggestion-chip shadow-sm" 
+                      (click)="enviarSugerencia(sug)">
+                {{ sug }}
+              </button>
+            </div>
+          </div>
+
+          <ng-container *ngFor="let message of mensajes">
+
+            <!-- Mensaje del usuario -->
+            <div class="d-flex mb-4 justify-content-end" *ngIf="message.enviado === 'user'">
+              <div class="flex-grow-1" style="max-width: 85%;">
+                <div class="card border-0 text-white" style="border-radius: 18px; border-bottom-right-radius: 5px; background: linear-gradient(135deg, #9e4141 0%, #d43d3d 100%);">
+                  <div class="card-body">
+                    <p class="card-text mb-0">{{ message.contenido }}</p>
+                    <small class="text-white-50 mt-2 d-block">{{ message.hora }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-shrink-0 ms-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px; background: linear-gradient(135deg, #9e4141 0%, #d43d3d 100%);">
+                  <i class="fas fa-user fa-lg text-white"></i>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Mensaje del bot -->
+            <div class="d-flex mb-4" *ngIf="message.enviado === 'bot'">
+              <div class="flex-shrink-0 me-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
+                  <img src="assets/img/patricia-de-lado.jpeg" alt="Patricia IUJO" class="rounded-circle" style="width: 55px; height: 55px; object-fit: cover; object-position: center top; filter: brightness(1.2) contrast(1.1);">
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="card border-0 shadow-sm" style="border-radius: 18px; border-bottom-left-radius: 5px;">
+                  <div class="card-body">
+                    <h5 class="card-title mb-1 text-danger fw-bold">Asistente IUJO</h5>
+                    <p class="card-text mb-0" [innerHTML]="message.contenido"></p>
+                    <small class="text-muted mt-2 d-block">{{ message.hora }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <h2 class="flex text-center mt-5" style="color: #787879;" *ngIf="mensajes.length == 0">No hay mensajes</h2>
+
+          <!-- Mensaje del bot -->
+          <div class="d-flex mb-4" *ngIf="false">
+            <div class="flex-shrink-0 me-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
+                <img src="assets/img/patricia-de-lado.jpeg" alt="Patricia IUJO" class="rounded-circle" style="width: 55px; height: 55px; object-fit: contain; filter: brightness(1.2) contrast(1.1);">
+              </div>
+            </div>
+            <div class="flex-grow-1">
+              <div class="card border-0 shadow-sm" style="border-radius: 18px; border-bottom-left-radius: 5px;">
+                <div class="card-body">
+                  <h5 class="card-title mb-1 text-primary fw-bold">Patricia, Asistente IUJO</h5>
+                  <p class="card-text mb-0">¡Hola! ¿Cómo puedo ayudarte con tus estudios hoy?</p>
+                  <small class="text-muted mt-2 d-block">Hoy, 09:15</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lds-ripple" *ngIf="cargandoMensajeBot"><div></div><div></div></div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Input fijo en la parte inferior -->
+  <footer class="bg-white border-top py-3 shadow-lg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+          <div class="input-group shadow-lg rounded-pill">
+            <input type="text" class="form-control form-control-lg border-0 rounded-pill ps-4"
+                   placeholder="Escribe tu pregunta aquí..."
+                   aria-label="Escribe tu pregunta"
+                   [(ngModel)]="nuevoMensajeUsuario"
+                   (keyup.enter)="setPromptUser()"
+                   >
+            <button class="btn rounded-pill px-4 py-2" type="button" (click)="setPromptUser()" [disabled]="botonEnviarDisabled" style="background: linear-gradient(135deg, #c63535 0%, #f83d3d 100%);">
+              <i class="fas fa-paper-plane me-2 text-white"></i> <strong class="text-white">Enviar</strong>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,17 @@
+{
+    "name": "patricia-ai-iujo",
+    "services": [
+        {
+            "name": "frontend",
+            "path": "./dashboard-patricia-front",
+            "port": 5173,
+            "command": "npm run dev"
+        },
+        {
+            "name": "backend",
+            "path": "./dashboard-patricia-back",
+            "port": 3001,
+            "command": "npm start"
+        }
+    ]
+}

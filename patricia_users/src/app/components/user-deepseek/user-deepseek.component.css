@@ -1,0 +1,66 @@
+.lds-ripple,
+.lds-ripple div {
+  box-sizing: border-box;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 30px; /* Un poco más grande que 20px, más pequeño que 40px */
+  height: 30px; /* Un poco más grande que 20px, más pequeño que 40px */
+}
+.lds-ripple div {
+  position: absolute;
+  border: 1.5px solid currentColor; /* Borde intermedio, puedes ajustarlo a 1px o 2px */
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 13.5px; /* Calculado para 30px */
+    left: 13.5px; /* Calculado para 30px */
+    width: 3px; /* Calculado para 30px */
+    height: 3px; /* Calculado para 30px */
+    opacity: 0;
+  }
+  4.9% {
+    top: 13.5px; /* Calculado para 30px */
+    left: 13.5px; /* Calculado para 30px */
+    width: 3px; /* Calculado para 30px */
+    height: 3px; /* Calculado para 30px */
+    opacity: 0;
+  }
+  5% {
+    top: 13.5px; /* Calculado para 30px */
+    left: 13.5px; /* Calculado para 30px */
+    width: 3px; /* Calculado para 30px */
+    height: 3px; /* Calculado para 30px */
+    opacity: 1;
+  }
+  100% {
+    top: 0;
+    left: 0;
+    width: 30px; /* Tamaño final */
+    height: 30px; /* Tamaño final */
+    opacity: 0;
+  }
+}
+
+/* Sugerencias Rápidas */
+.suggestion-chip {
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  border-color: #c63535;
+  color: #c63535;
+}
+.suggestion-chip:hover {
+  background-color: #c63535;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(198, 53, 53, 0.25) !important;
+}
