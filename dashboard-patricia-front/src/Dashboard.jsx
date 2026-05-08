@@ -104,7 +104,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
 
       <div className="relative z-10">
         <nav className="bg-slate-900/40 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-800/50 p-4">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center space-x-4">
               <div className={`h-10 w-10 rounded-full border-2 ${themeBorder} overflow-hidden bg-slate-800 shadow-lg ${themeGlow}`}>
                 <img src={preview || 'https://via.placeholder.com/150'} alt="User" className="h-full w-full object-cover" />
@@ -112,12 +112,12 @@ const Dashboard = ({ consultas, user, onLogout }) => {
               <span className={`font-black text-2xl tracking-tighter italic ${themeColor}`}>PATRICIA AI</span>
             </div>
             
-            <div className="flex items-center space-x-6">
-              <button onClick={() => setSeccion('inicio')} className={`text-sm font-bold transition-all ${seccion === 'inicio' ? themeColor : 'text-slate-400 hover:text-white'}`}>Inicio</button>
-              <button onClick={() => setSeccion('historial')} className={`text-sm font-bold transition-all ${seccion === 'historial' ? themeColor : 'text-slate-400 hover:text-white'}`}>Preguntas Frecuentes</button>
-              <button onClick={() => setSeccion('editor')} className={`text-sm font-bold transition-all ${seccion === 'editor' ? themeColor : 'text-slate-400 hover:text-white'}`}>Editor XML</button>
-              <button onClick={() => setSeccion('perfil')} className={`text-sm font-bold transition-all ${seccion === 'perfil' ? themeColor : 'text-slate-400 hover:text-white'}`}>Personalizar</button>
-              <button onClick={onLogout} className="bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-xs font-black transition-all">SALIR</button>
+            <div className="flex items-center flex-wrap justify-center gap-4 md:gap-6">
+              <button onClick={() => setSeccion('inicio')} className={`text-xs md:text-sm font-bold transition-all ${seccion === 'inicio' ? themeColor : 'text-slate-400 hover:text-white'}`}>Inicio</button>
+              <button onClick={() => setSeccion('historial')} className={`text-xs md:text-sm font-bold transition-all ${seccion === 'historial' ? themeColor : 'text-slate-400 hover:text-white'}`}>Preguntas</button>
+              <button onClick={() => setSeccion('editor')} className={`text-xs md:text-sm font-bold transition-all ${seccion === 'editor' ? themeColor : 'text-slate-400 hover:text-white'}`}>Editor XML</button>
+              <button onClick={() => setSeccion('perfil')} className={`text-xs md:text-sm font-bold transition-all ${seccion === 'perfil' ? themeColor : 'text-slate-400 hover:text-white'}`}>Perfil</button>
+              <button onClick={onLogout} className="bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-[10px] md:text-xs font-black transition-all uppercase">Salir</button>
             </div>
           </div>
         </nav>
@@ -126,20 +126,20 @@ const Dashboard = ({ consultas, user, onLogout }) => {
           {seccion === 'inicio' ? (
             <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
               <header>
-                <h1 className="text-6xl font-black tracking-tighter text-white">Dashboard <span className={themeColor}>Patricia</span></h1>
-                <p className="text-slate-400 mt-4 text-xl">Bienvenido, <span className="text-white font-semibold capitalize">{user.username}</span>.</p>
+                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white">Dashboard <span className={themeColor}>Patricia</span></h1>
+                <p className="text-slate-400 mt-4 text-lg md:text-xl">Bienvenido, <span className="text-white font-semibold capitalize">{user.username}</span>.</p>
               </header>
 
               <div className={`relative overflow-hidden bg-slate-900/60 backdrop-blur-md rounded-[3rem] border border-slate-800/50 shadow-2xl p-12 transition-all duration-500`}>
                 <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
-                  <div className="space-y-6">
+                  <div className="space-y-6 text-center lg:text-left">
                     <div className={`inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border ${themeBorder} ${themeColor}`}>Métrica Institucional</div>
-                    <h2 className="text-4xl font-bold text-white leading-tight">Interacciones totales del Asistente</h2>
-                    <p className="text-slate-400 text-lg max-w-md leading-relaxed">Sincronizado con MongoDB.</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">Interacciones totales del Asistente</h2>
+                    <p className="text-slate-400 text-base md:text-lg max-w-md leading-relaxed mx-auto lg:mx-0">Sincronizado con MongoDB.</p>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <span className={`text-9xl font-black tracking-tighter leading-none transition-colors duration-500 ${themeColor}`}>{consultas.toLocaleString()}</span>
-                    <div className="text-slate-500 font-bold uppercase tracking-[0.3em] text-xs mt-4">Consultas acumuladas</div>
+                  <div className="flex flex-col items-center lg:items-end">
+                    <span className={`text-7xl md:text-9xl font-black tracking-tighter leading-none transition-colors duration-500 ${themeColor}`}>{consultas.toLocaleString()}</span>
+                    <div className="text-slate-500 font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mt-4">Consultas acumuladas</div>
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@ const Dashboard = ({ consultas, user, onLogout }) => {
               <div className="bg-slate-900/70 backdrop-blur-xl rounded-[2.5rem] border border-slate-800/50 p-8 md:p-12 shadow-2xl">
                 <header className="mb-8 flex justify-between items-end">
                   <div>
-                    <h2 className="text-3xl font-black text-white">Preguntas <span className={themeColor}>Frecuentes</span></h2>
+                    <h2 className="text-2xl md:text-3xl font-black text-white">Preguntas <span className={themeColor}>Frecuentes</span></h2>
                     <p className="text-slate-400 text-sm mt-1">Supervisa en tiempo real qué están preguntando los estudiantes.</p>
                   </div>
                   <div className={`text-sm font-bold ${themeColor} bg-slate-950/50 px-4 py-2 rounded-xl`}>
