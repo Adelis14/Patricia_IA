@@ -10,10 +10,13 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const dbLocal = mongoose.createConnection('mongodb://adelissanchez16_db_user:adelis@ac-gbr35zd-shard-00-00.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-01.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-02.ilj0krv.mongodb.net:27017/asistente-iujo?ssl=true&replicaSet=atlas-pjs17l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0');
-dbLocal.on('error', (err) => console.error("Error conectando a dbLocal (Usuarios):", err));
+// Conexión principal (Usuarios y Configuración XML)
+const mainUri = 'mongodb://adelissanchez16_db_user:adelis@ac-gbr35zd-shard-00-00.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-01.ilj0krv.mongodb.net:27017,ac-gbr35zd-shard-00-02.ilj0krv.mongodb.net:27017/asistente-iujo?ssl=true&replicaSet=atlas-pjs17l-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0';
+mongoose.connect(mainUri)
+  .then(() => console.log("✅ Conectado exitosamente a MongoDB Atlas (asistente-iujo)"))
+  .catch(err => console.error("❌ Error CRÍTICO conectando a MongoDB:", err.message));
 
-// Usamos el formato estandar sin +srv para evitar el error de DNS en Node.js
+// Conexión secundaria (Estadísticas Cloud)
 const cloudUri = 'mongodb://reybiergaliniujo03_db_user:sHX3gZwNyAYovohw@ac-flwukhz-shard-00-00.gxtmudw.mongodb.net:27017,ac-flwukhz-shard-00-01.gxtmudw.mongodb.net:27017,ac-flwukhz-shard-00-02.gxtmudw.mongodb.net:27017/prod-patricia?ssl=true&replicaSet=atlas-flwukhz-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0';
 const dbCloud = mongoose.createConnection(cloudUri);
 dbCloud.on('error', (err) => console.error("Error conectando a dbCloud (Estadísticas):", err.message));
@@ -34,21 +37,21 @@ const upload = multer({ storage });
 
 // Modelos
 const Stats = dbCloud.model('Stats', new mongoose.Schema({ consultas: Number }, { collection: 'stadistics', strict: false }));
-const User = dbLocal.model('User', new mongoose.Schema({
+const User = mongoose.model('User', new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   colorTema: { type: String, default: 'cyan' },
   avatarUrl: { type: String, default: '' } 
 }, { collection: 'usuarios' }));
 
-const ChatLog = dbLocal.model('ChatLog', new mongoose.Schema({
+const ChatLog = mongoose.model('ChatLog', new mongoose.Schema({
   questions: [String],
   answer: String,
   count: { type: Number, default: 1 },
   date: { type: Date, default: Date.now }
 }, { collection: 'chatlogs' }));
 
-const Config = dbLocal.model('Config', new mongoose.Schema({
+const Config = mongoose.model('Config', new mongoose.Schema({
   key: { type: String, default: 'assistant-xml' },
   content: { type: String, required: true }
 }, { collection: 'config' }));
